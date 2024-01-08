@@ -1,4 +1,4 @@
-name: 'static-validation'
+name: 'validate-infra-eks-sydney'
 
 env:
   TERRAFORM_VERSION: '1.6.6'
