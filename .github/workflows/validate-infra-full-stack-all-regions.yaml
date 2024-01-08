@@ -86,7 +86,7 @@ jobs:
           terragrunt --version
           
       - name: Terragrunt Format
-        run: TG_FORMAT_ARG="${{ env.TG_FORMAT_ARGS }}" make format
+        run: TG_FORMAT_ARG="${{ env.TG_FORMAT_ARGS }}" TG_FORMAT_ARGS="${{ env.TG_FORMAT_ARGS }}" make format
 
       - name: Terragrunt Validation
-        run:  TG_VALIDATE_ARG="${{ env.TG_VALIDATE_ARGS }}" make validate
+        run:  TG_VALIDATE_ARG="${{ env.TG_VALIDATE_ARGS }}" TG_VALIDATE_ARGS="${{ env.TG_VALIDATE_ARGS }}" make validate
