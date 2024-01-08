@@ -1,13 +1,10 @@
 ### ---------------------------------------------------------------------------------------------------------------------
-### These parameters apply to all the components across all stacks in this environment.
+### Component-specific local parameters (not Terraform inputs)
 ### ---------------------------------------------------------------------------------------------------------------------
 
 locals {
   override = ""
-
-  tf_env = split("/", trimprefix(get_original_terragrunt_dir(), "${get_repo_root()}/config/"))[2]
-  name = coalesce(local.override, local.tf_env)
-}
-
-inputs = {
+  tf_component = split("/", trimprefix(get_original_terragrunt_dir(), "${get_repo_root()}/config/"))[4]
+  name = coalesce(local.override, local.tf_component)
+  description = "eks component"
 }
