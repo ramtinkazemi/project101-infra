@@ -18,7 +18,7 @@ env:
   TG_ALLOW_RENDERING: 'false'
   TG_INIT_ARGS: '-reconfigure --terragrunt-non-interactive'
   TG_VALIDATE_ARGS: '--terragrunt-no-auto-init --terragrunt-non-interactive'
-  TG_PLAN_ARGS: '--terragrunt-no-auto-init --terragrunt-non-interactive'
+  TG_PLAN_ARGS: '--terragrunt-non-interactive'
   TG_APPLY_ARGS: '--terragrunt-non-interactive'
   TG_DESTROY_ARGS: '--terragrunt-no-auto-init --terragrunt-non-interactive'
 
