@@ -33,6 +33,8 @@ locals {
   Component        = read_terragrunt_config("${get_terragrunt_dir()}/component.hcl").locals
   component = local.Component.name
 
+  component_fullname = "${local.namespace}/${local.region}/${local.env}/${local.stack}/${local.component}"
+
   ### load component-level parameters
   Source        = read_terragrunt_config("${get_terragrunt_dir()}/source.hcl").locals
   module_source = local.Source.module_source
@@ -235,7 +237,7 @@ terraform {
 
   after_hook "success" {
     commands     = ["apply"]
-    execute      = ["echo", "Changes have been applied successfully!"]
+    execute      = ["echo", "${local.component_fullname} => Changes have been applied successfully!"]
     run_on_error = false
   }
 

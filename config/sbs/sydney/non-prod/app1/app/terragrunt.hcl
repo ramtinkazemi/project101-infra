@@ -3,26 +3,19 @@
 ### ---------------------------------------------------------------------------------------------------------------------
 
 inputs = {
-  namespace               = "${include.namespace.locals.name}"
-  region                  = "${include.region.locals.name}"
-  stack                   = "${include.stack.locals.name}"
-  env                     = "${include.env.locals.name}"
-  component               = "${include.component.locals.name}"
-  aws_region              = "${include.region.locals.name}"
-  name_prefix             = "${include.stack.locals.name}-${include.env.locals.name}-${include.component.locals.name}"
-  
-  vpc_name                = "vpc"
-  cidr_block              = "10.1.0.0/16"
-  public_subnet_cidrs     = ["10.1.1.0/24", "10.1.2.0/24"]
-  private_subnet_cidrs    = ["10.1.101.0/24", "10.1.102.0/24"]
-  enable_nat_gateway      = true
-  single_nat_gateway      = true
-  vpce_interface_services = ["logs", "sts", "eks", "ecr.api", "ecr.dkr"]
-  enable_s3_gateway       = true
+  namespace   = "${include.namespace.locals.name}"
+  region      = "${include.region.locals.name}"
+  stack       = "${include.stack.locals.name}"
+  env         = "${include.env.locals.name}"
+  component   = "${include.component.locals.name}"
+  aws_region  = "${include.region.locals.name}"
+  name_prefix = "${include.stack.locals.name}-${include.env.locals.name}-${include.component.locals.name}"
 
+  app_name      = "my-app"
+  k8s_namespace = "${include.stack.locals.name}-${include.env.locals.name}-${include.component.locals.name}"
+  vpc_id        = "${dependency.network.outputs.vpc_id}"
+  cluster_name  = "${dependency.eks.outputs.cluster_name}"
 }
-
-
 
 ### ----------------------------------------- ----------------------------------------------------------------------------
 ### Component-specific Terragunt hooks
