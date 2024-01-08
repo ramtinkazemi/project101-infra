@@ -9,7 +9,7 @@ env:
   AWS_ACCOUNT_ID: '211125726495'
   AWS_OIDC_ROLE: 'arn:aws:iam::211125726495:role/github-action-infra-role-ap-southeast-2'
 
-  TG_CONFIG_PATH: 'config/sbs/non-prod'
+  TG_CONFIG_PATH: 'config/sbs/'
 
   TG_STACK_VERSION: 'main'
   TG_ALLOW_DISABLING: 'true'
@@ -97,9 +97,9 @@ jobs:
         run: make plan TF_DESTROY=true
 
       - name: Terragrunt Apply
-        if: ${{ (github.ref == 'refs/heads/' + env.RELEASE_BRANCH) && env.TG_DESTROY == 'false' }}
+        if: ${{ github.ref == 'refs/heads/' + env.RELEASE_BRANCH && env.TG_DESTROY == 'false' }}
         run: make apply
 
       - name: Terragrunt Destroy
-        if: ${{ (github.ref == 'refs/heads/' + env.RELEASE_BRANCH) && env.TG_DESTROY == 'true' }}
+        if: ${{ github.ref == 'refs/heads/' + env.RELEASE_BRANCH && env.TG_DESTROY == 'true' }}
         run: make destroy
