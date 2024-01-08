@@ -30,12 +30,12 @@ on:
       name:
         default: Debugging...
         description: "Running workflow manually"
-  push:
-    branches:
-      - main
-    paths:
-      - 'config/sbs/singapore/non-prod/**.tf'
-      - 'config/sbs/singapore/non-prod/**.hcl'   
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'config/sbs/singapore/non-prod/**.tf'
+  #     - 'config/sbs/singapore/non-prod/**.hcl'   
 
 permissions:
   id-token: write   # This is required for requesting the JWT
