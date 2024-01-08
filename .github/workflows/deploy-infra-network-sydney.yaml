@@ -36,13 +36,6 @@ on:
     paths:
       - 'config/sbs/sydney/non-prod/app1/network/**.tf'
       - 'config/sbs/sydney/non-prod/app1/network/**.hcl'   
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'config/sbs/sydney/non-prod/app1/network/**.tf'
-      - 'config/sbs/sydney/non-prod/app1/network/**.hcl'
-
 
 permissions:
   id-token: write   # This is required for requesting the JWT
