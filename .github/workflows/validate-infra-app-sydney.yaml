@@ -9,7 +9,7 @@ env:
   AWS_ACCOUNT_ID: '211125726495'
   AWS_OIDC_ROLE: 'arn:aws:iam::211125726495:role/github-action-infra-role-ap-southeast-2'
 
-  TG_CONFIG_PATH: 'config/sbs/non-prod/sydney/app1/app'
+  TG_CONFIG_PATH: 'config/sbs/sydney/non-prod/app1/app'
 
   TG_STACK_VERSION: 'main'
   TG_ALLOW_DISABLING: 'true'
