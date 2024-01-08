@@ -97,9 +97,9 @@ jobs:
         run: make plan TF_DESTROY=true
 
       - name: Terragrunt Apply
-        if: ${{ (github.ref == 'refs/heads/' + env.RELEASE_BRANCH) && env.TG_DESTROY == 'false' }}
+        if: ${{ github.ref == 'refs/heads/' + env.RELEASE_BRANCH && env.TG_DESTROY == 'false' }}
         run: make apply
 
       - name: Terragrunt Destroy
-        if: ${{ (github.ref == 'refs/heads/' + env.RELEASE_BRANCH) && env.TG_DESTROY == 'true' }}
+        if: ${{ github.ref == 'refs/heads/' + env.RELEASE_BRANCH && env.TG_DESTROY == 'true' }}
         run: make destroy
