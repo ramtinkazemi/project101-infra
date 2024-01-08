@@ -1,24 +1,26 @@
-name: 'static-validation'
+name: 'deploy-infra-full-stack-all-regions'
 
 env:
   TERRAFORM_VERSION: '1.6.6'
   TERRAGRUNT_VERSION: '0.54.11'
   GO_VERSION: '1.21.5'
 
-  AWS_REGION: 'ap-southeast-2'
+  AWS_REGION: 'ap-southeast-1'
   AWS_ACCOUNT_ID: '211125726495'
   AWS_OIDC_ROLE: 'arn:aws:iam::211125726495:role/github-action-infra-role-ap-southeast-2'
 
-  TG_CONFIG_PATH: 'config/sbs/sydney/non-prod/app1/app'
-  
+  TG_CONFIG_PATH: 'config/sbs/non-prod'
+
   TG_STACK_VERSION: 'main'
   TG_ALLOW_DISABLING: 'true'
   TG_DISABLED_COMPONENTS: ''
   TG_POST_RENDER_INIT: 'false'
   TG_ALLOW_RENDERING: 'false'
-
-  TG_FORMAT_ARGS: "-recursive -list=true -write=false"
-  TG_VALIDATE_ARGS: '--terragrunt-non-interactive'
+  TG_INIT_ARGS: '-reconfigure --terragrunt-non-interactive'
+  TG_VALIDATE_ARGS: '--terragrunt-no-auto-init --terragrunt-non-interactive'
+  TG_PLAN_ARGS: '--terragrunt-no-auto-init --terragrunt-non-interactive'
+  TG_APPLY_ARGS: '--terragrunt-non-interactive'
+  TG_DESTROY_ARGS: '--terragrunt-no-auto-init --terragrunt-non-interactive'
 
   RELEASE_BRANCH: 'main'
   TG_DESTROY: 'false'
@@ -32,13 +34,20 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'config/sbs/*/non-prod/**.tf'
+      - 'config/sbs/*/non-prod/**.hcl'   
   pull_request:
     branches:
       - main
+    paths:
+      - 'config/sbs/*/non-prod/**.tf'
+      - 'config/sbs/*/non-prod/**.hcl'
 
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
+
 jobs:
   main:
     name: 'main'
@@ -79,8 +88,18 @@ jobs:
           chmod +x /usr/local/bin/terragrunt
           terragrunt --version
           
-      - name: Terragrunt Format
-        run: TG_FORMAT_ARG="${{ env.TG_FORMAT_ARGS }}" make format
+      - name: Run Terragrunt Plan Deploy
+        if: ${{ env.TG_DESTROY == 'false' }}
+        run: make plan TG_DESTROY=false
 
-      - name: Terragrunt Validation
-        run:  TG_VALIDATE_ARG="${{ env.TG_VALIDATE_ARGS }}" make validate
+      - name: Run Terragrunt Plan Destroy
+        if: ${{ env.TG_DESTROY == 'true' }}
+        run: make plan TF_DESTROY=true
+
+      - name: Terragrunt Apply
+        if: ${{ (github.ref == 'refs/heads/' + env.RELEASE_BRANCH) && env.TG_DESTROY == 'false' }}
+        run: make apply
+
+      - name: Terragrunt Destroy
+        if: ${{ (github.ref == 'refs/heads/' + env.RELEASE_BRANCH) && env.TG_DESTROY == 'true' }}
+        run: make destroy
