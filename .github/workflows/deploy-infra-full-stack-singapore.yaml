@@ -1,4 +1,4 @@
-name: 'deploy-infra-full-stack-singapore'
+name: 'deploy-infra-full-stack-singapore-non-prod'
 
 env:
   TERRAFORM_VERSION: '1.6.6'

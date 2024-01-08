@@ -1,4 +1,4 @@
-name: 'validate-infra-eks-sydney'
+name: 'validate-infra-eks-sydney-non-prod-non-prod'
 
 env:
   TERRAFORM_VERSION: '1.6.6'
