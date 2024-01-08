@@ -1,4 +1,4 @@
-name: 'deploy-infra-app-sydney'
+name: 'deploy-infra-app-sydney-non-prod'
 
 env:
   TERRAFORM_VERSION: '1.6.6'
@@ -94,7 +94,7 @@ jobs:
 
       - name: Run Terragrunt Plan Destroy
         if: ${{ env.TG_DESTROY == 'true' }}
-        run: make plan TF_DESTROY=true
+        run: make plan TF_DESTROY=true 
 
       - name: Terragrunt Apply
         if: ${{ github.ref == 'refs/heads/' + env.RELEASE_BRANCH && env.TG_DESTROY == 'false' }}

@@ -1,4 +1,4 @@
-name: 'deploy-infra-full-stack-all-regions'
+name: 'deploy-infra-full-stack-all-regions-non-prod'
 
 env:
   TERRAFORM_VERSION: '1.6.6'

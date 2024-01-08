@@ -1,4 +1,4 @@
-name: 'deploy-infra-eks-sydney'
+name: 'deploy-infra-eks-sydney-non-prod'
 
 env:
   TERRAFORM_VERSION: '1.6.6'
