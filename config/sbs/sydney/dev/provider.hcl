@@ -6,5 +6,5 @@
 locals {
   name       = "aws"
   account_id = "${get_env("AWS_ACCOUNT_ID")}"
-  role_arn   = "arn:aws:iam::${local.account_id}:role/gha-infra-role-ap-southeast-2"
+  role_arn   = "arn:aws:iam::${local.account_id}:role/gha-oidc-infra-role-ap-southeast-2"
 }
