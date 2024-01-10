@@ -1,4 +1,4 @@
-name: 'deploy-infra-sydney-project101(ful_stack)-dev'
+name: 'deploy-infra-sydney-project101(full_stack)-dev'
 
 env:
   TERRAFORM_VERSION: '1.6.6'
