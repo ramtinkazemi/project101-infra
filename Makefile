@@ -1,12 +1,18 @@
 .PHONY: all check-aws init validate plan apply destroy
 
-
-# Export TG_DESTROY and TG_CONFIG_PATH so it's available to the shell commands
-# Set TG_DESTROY to 'false' if not provided
 export TG_DESTROY ?= false
 export TG_CONFIG_PATH
 
-all: clean-up check-aws init validate plan apply destroy
+setup-local-env:
+ifeq ($(GITHUB_ACTIONS),true)
+	@echo "Running on GitHub Actions => Skipping .env.local export
+else
+	@rm -f .env.local.tmp 2> /dev/null || true
+	@sed -E "s/=(['\"])([^'\"]+)(['\"])/=\2/" .env.local > .env.local.tmp
+	$(eval include .env.local.tmp)
+	$(eval export)
+	@echo "Running locally => .env.local variables exported"
+endif
 
 check-config-path:
 	@if [ -z "$(TG_CONFIG_PATH)" ]; then \
@@ -19,33 +25,36 @@ clean-up:
 	@echo "Cleaning up Terragrunt cache..."
 	@find config/ -type d -name .terragrunt-cache -exec rm -rf {} \; 2>/dev/null || true
 
-check-aws:
-	@echo "Checking AWS credentials..."
-	@AWS_IDENTITY=$$(aws sts get-caller-identity --output text --query 'Account'); \
+check-aws: setup-local-env
+	@echo "Checking AWS credentials..."; \
 	AWS_USER=$$(aws sts get-caller-identity --output text --query 'Arn'); \
-	if [ -z "$$AWS_IDENTITY" ]; then \
+	if [ -z "$${AWS_USER}" ]; then \
 		echo "Failed to retrieve AWS identity."; \
 		exit 1; \
 	else \
-		echo "AWS User: $$AWS_USER"; \
+		echo "AWS User: $${AWS_USER}"; \
 	fi
 
-init: check-config-path check-aws
+init: setup-local-env check-config-path check-aws
+	@echo TG_INIT_ARGS=$(TG_INIT_ARGS)
 	@echo "Initializing Terragrunt..."
-	@./bin/init.sh $(TG_CONFIG_PATH)
+	@./bin/init.sh
 
-format: check-config-path
+format: setup-local-env check-config-path
 	@echo "Formatting Terragrunt configuration..."
+	@echo TG_FORMAT_ARGS=$(TG_FORMAT_ARGS)
 	@./bin/format.sh $(TG_CONFIG_PATH)
 
-validate: init
+validate: setup-local-env init
 	@echo "Validating Terragrunt configuration..."
+	@echo TG_VALIDATE_ARGS=$(TG_VALIDATE_ARGS)
 	@./bin/validate.sh $(TG_CONFIG_PATH)
 
 sure: format validate
 
-plan: check-config-path check-aws
+plan: setup-local-env check-config-path check-aws
 	@echo "TG_DESTROY=$(TG_DESTROY)"
+	@echo TG_PLAN_ARGS=$(TG_PLAN_ARGS)
 	@if [ "$${TG_DESTROY}" = "true" ]; then \
 		echo "Generating destroy plan..."; \
 		./bin/plan.sh $(TG_CONFIG_PATH) -destroy; \
@@ -54,10 +63,12 @@ plan: check-config-path check-aws
 		./bin/plan.sh $(TG_CONFIG_PATH); \
 	fi
 
-apply: check-config-path check-aws
+apply: setup-local-env check-config-path check-aws
+	@echo TG_APPLY_ARGS=$(TG_APPLY_ARGS)
 	@echo "Deploying resources..."
 	@./bin/apply.sh $(TG_CONFIG_PATH)
 
-destroy: check-aws
+destroy: setup-local-env check-aws
+	@echo TG_DESTROY_ARGS=$(TG_DESTROY_ARGS)
 	@echo "Destroying resources..."
 	@./bin/destroy.sh $(TG_CONFIG_PATH)
