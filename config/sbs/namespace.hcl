@@ -3,9 +3,9 @@
 ### ---------------------------------------------------------------------------------------------------------------------
 
 locals {
-  override = ""
+  override     = ""
   tf_namespace = split("/", trimprefix(get_original_terragrunt_dir(), "${get_repo_root()}/config/"))[0]
-  name = coalesce(local.override, local.tf_namespace,"NS")
+  name         = coalesce(local.override, local.tf_namespace, "NS")
 
 }
 
