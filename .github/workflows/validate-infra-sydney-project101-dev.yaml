@@ -67,7 +67,7 @@ jobs:
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ env.AWS_OIDC_ROLE }}
-          role-session-name: github-actions-infra
+          role-session-name: infra
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
