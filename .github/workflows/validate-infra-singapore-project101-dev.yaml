@@ -6,10 +6,10 @@ env:
   GO_VERSION: '1.21.5'
 
   AWS_REGION: 'ap-southeast-2'
-  AWS_ACCOUNT_ID: '211125726495'
-  AWS_OIDC_ROLE: 'arn:aws:iam::211125726495:role/gha-oidc-infra-role-ap-southeast-2'
+  AWS_ACCOUNT_ID: '339713085154'
+  AWS_OIDC_ROLE: 'arn:aws:iam::339713085154:role/gha-oidc-infra-role-ap-southeast-2'
 
-  TG_CONFIG_PATH: 'config/sbs/singapore/dev/proj101'
+  TG_CONFIG_PATH: 'config/sbs/singapore/dev/project101'
 
   TG_STACK_VERSION: 'main'
   TG_ALLOW_DISABLING: 'true'

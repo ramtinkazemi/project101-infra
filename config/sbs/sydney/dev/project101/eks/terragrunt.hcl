@@ -9,12 +9,19 @@ inputs = {
   env         = "${include.env.locals.name}"
   component   = "${include.component.locals.name}"
   aws_region  = "${include.region.locals.name}"
-  name_prefix = "${include.stack.locals.name}-${include.env.locals.name}-${include.component.locals.name}"
+  name_prefix = "${include.stack.locals.name}-${include.component.locals.name}-${include.env.locals.name}"
 
-  app_name      = "${include.stack.locals.name}-${include.env.locals.name}-${include.component.locals.name}"
-  vpc_id        = "${dependency.network.outputs.vpc_id}"
-  cluster_name  = "${dependency.eks.outputs.cluster_name}"
+  vpc_id                               = "${dependency.network.outputs.vpc_id}"
+  cluster_name                         = "${include.stack.locals.name}-${include.component.locals.name}-${include.env.locals.name}"
+  public_subnet_ids                    = "${dependency.network.outputs.public_subnet_ids}"
+  private_subnet_ids                   = "${dependency.network.outputs.private_subnet_ids}"
+  additional_eks_admin_role_arn        = "arn:aws:iam::339713085154:role/AWSReservedSSO_AdministratorAccess_0629dee06a09e385"
+  cluster_version                      = "1.28"
+  cluster_endpoint_private_access      = false
+  cluster_endpoint_public_access       = true
+  cluster_endpoint_public_access_cidrs = ["0.0.0.0/0"]
 }
+
 
 ### ---------------------------------------------------------------------------------------------------------------------
 ### Component-specific Terragunt hooks
